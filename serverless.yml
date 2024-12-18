@@ -1,0 +1,63 @@
+service: camvia-serverless-api
+
+custom:
+  itemsTableName: camvia-items  # Aquí defines el nombre de la tabla DynamoDB
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-2 # Escoge la región que prefieras
+  profile: default
+  stage: dev
+  role: arn:aws:iam::908027414392:role/rol_serverless
+  environment:
+    ITEMS_TABLE: ${self:custom.itemsTableName}  # Referencia al nombre de la tabla DynamoDB desde una variable
+
+functions:
+  getItems:
+    handler: src/handlers/itemsHandler.getItems  # Ruta al handler para el GET
+    events:
+      - http:
+          path: items  # Endpoint de la API
+          method: get  # Método HTTP GET        
+  createItem:
+    handler: src/handlers/itemsHandler.createItem  # Ruta al handler para el POST
+    events:
+      - http:
+          path: items  # Endpoint de la API
+          method: post  # Método HTTP POST
+  getPeopleById:
+    handler: src/handlers/swapiHandler.getPeopleById  # Ruta al handler para el GET
+    events:
+      - http:
+          path: swapi/spanish/people/{id}
+          method: get
+  getFilmById:
+    handler: src/handlers/swapiHandler.getFilmById  # Ruta al handler para el GET
+    events:
+      - http:
+          path: swapi/spanish/film/{id}
+          method: get
+  swagger:
+    handler: src/handlers/swaggerHandler.swaggerHandler
+    events:
+      - http:
+          path: api/v1/swagger  # Endpoint donde se expondrá la documentación Swagger
+          method: get  # Método HTTP GET
+          cors: true
+
+resources:
+  Resources:
+    ItemsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.itemsTableName}  # Nombre de la tabla DynamoDB
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
