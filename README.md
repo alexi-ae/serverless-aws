@@ -152,18 +152,13 @@ Inicia sessión en serverless framework para poder ejecutar los comandos de desp
 serverless login
 ```
 
-## 5. Incia sesión en serverless framework
-```bash
-serverless login
-```
-
-## 6. Ejecutar pruebas unitarias
+## 5. Ejecutar pruebas unitarias
 Como buena practica ejecuta pruebas unitarias antes del despliegue.
 ```bash
 npx jest --coverage
 ```
 
-## 7. Desploy
+## 6. Desploy
 
 ```bash
 serverless deploy
@@ -172,7 +167,7 @@ or (informativo)
 ```bash
 serverless deploy --verbose
 ```
-## 8. Resultados
+## 7. Resultados
 ```bash
  ✔ Service deployed to stack camvia-serverless-api-dev (45s)
 endpoints:
@@ -188,6 +183,38 @@ functions:
   getFilmById: camvia-serverless-api-dev-getFilmById (15 MB)
   swagger: camvia-serverless-api-dev-swagger (15 MB)
 
+```
+
+# Servicios
+
+## Get Item
+
+```bash
+curl --location 'https://dz0x577ae0.execute-api.us-east-2.amazonaws.com/dev/items'
+```
+
+## Create Item
+
+```bash
+curl --location 'https://dz0x577ae0.execute-api.us-east-2.amazonaws.com/dev/items' \
+--header 'Content-Type: application/json' \
+--data '{
+    "id":null,
+    "name":"Espada de luz",
+    "description":"Uso en combate"
+}'
+```
+
+## Get People by Id - swapi spanish
+
+```bash
+curl --location 'https://dz0x577ae0.execute-api.us-east-2.amazonaws.com/dev/swapi/spanish/people/1'
+```
+
+## Get Film by Id - swapi spanish
+
+```bash
+curl --location 'https://dz0x577ae0.execute-api.us-east-2.amazonaws.com/dev/swapi/spanish/film/1'
 ```
 
 
